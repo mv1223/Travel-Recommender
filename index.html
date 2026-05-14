@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanMyYatra | Official Travel Discovery Platform</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header id="app-header" class="hidden">
+        <nav>
+            <a href="#" class="brand">PlanMyYatra</a>
+            <div class="nav-links">
+                <a href="#" onclick="showSection('home')">Home</a>
+                <a href="#" onclick="showSection('destinations')">Destinations</a>
+                <a href="#" onclick="showSection('profile-section')">Profile</a>
+                <a href="#" onclick="showSection('reviews')">Reviews</a>
+                <button class="btn-login" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 1. AUTH SECTION -->
+    <main id="auth-section" class="section-container">
+        <div style="max-width: 500px; margin: 4rem auto; padding: 2rem; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);">
+            <div id="login-form-container">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">Welcome to PlanMyYatra</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="search-item" style="margin-bottom: 1.5rem;">
+                        <label>Email Address</label>
+                        <input type="email" id="login-email" required placeholder="name@example.com" style="width: 100%;">
+                    </div>
+                    <div class="search-item" style="margin-bottom: 1.5rem;">
+                        <label>Password</label>
+                        <input type="password" id="login-password" required placeholder="••••••••" style="width: 100%;">
+                    </div>
+                    <button type="submit" class="btn-search" style="width: 100%; padding: 1rem;">Sign In</button>
+                    <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                        New explorer? <a href="#" onclick="toggleAuthForms()" style="color: var(--accent); font-weight: 600;">Create an account</a>
+                    </p>
+                </form>
+            </div>
+
+            <div id="signup-form-container" class="hidden">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">Start Your Journey</h2>
+                <form onsubmit="handleSignup(event)">
+                    <div class="search-item" style="margin-bottom: 1rem;">
+                        <label>Full Name</label>
+                        <input type="text" id="signup-name" required placeholder="John Doe" style="width: 100%;">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="search-item">
+                            <label>Date of Birth</label>
+                            <input type="date" id="signup-dob" required oninput="calculateAge()" onchange="calculateAge()" style="width: 100%;">
+                        </div>
+                        <div class="search-item">
+                            <label>Calculated Age</label>
+                            <input type="text" id="signup-age" readonly placeholder="Age" style="width: 100%; background: #f9f9f9;">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="search-item">
+                            <label>Gender</label>
+                            <select id="signup-gender" required style="width: 100%;">
+                                <option value="" disabled selected>Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="search-item">
+                            <label>Phone Number</label>
+                            <input type="tel" id="signup-phone" required placeholder="+91 ..." style="width: 100%;">
+                        </div>
+                    </div>
+                    <div class="search-item" style="margin-bottom: 1rem;">
+                        <label>Email Address</label>
+                        <input type="email" id="signup-email" required placeholder="name@example.com" style="width: 100%;">
+                    </div>
+                    <div class="search-item" style="margin-bottom: 1.5rem;">
+                        <label>Password</label>
+                        <input type="password" id="signup-password" required placeholder="••••••••" style="width: 100%;">
+                    </div>
+                    <button type="submit" class="btn-search" style="width: 100%; padding: 1rem;">Create Profile</button>
+                    <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                        Already have an account? <a href="#" onclick="toggleAuthForms()" style="color: var(--accent); font-weight: 600;">Sign In</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- 2. MAIN APP SECTION (Hidden until login) -->
+    <div id="main-app" class="hidden">
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <h1>Discover Your Next Adventure</h1>
+            <p>Plan your perfect trip with our official travel recommendations.</p>
+        </section>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <form id="official-search-form" class="search-container" style="margin-top: 0; box-shadow: none; padding: 0; width: 100%;">
+                <div class="search-item">
+                    <label>Budget Range (₹)</label>
+                    <select id="budget" required>
+                        <option value="" disabled selected>Choose Budget</option>
+                        <option value="5000">Economy (₹5,000 - ₹15,000)</option>
+                        <option value="20000">Standard (₹15,000 - ₹50,000)</option>
+                        <option value="100000">Premium (₹50,000+)</option>
+                    </select>
+                </div>
+                <div class="search-item">
+                    <label>Interest</label>
+                    <select id="trip-type" required>
+                        <option value="" disabled selected>Choose Interest</option>
+                        <option value="Historical">Culture & Heritage</option>
+                        <option value="Nature">Nature & Wildlife</option>
+                        <option value="Adventure">Adventure & Sports</option>
+                        <option value="Spiritual">Spiritual & Wellness</option>
+                    </select>
+                </div>
+                <div class="search-item">
+                    <label>Duration (Days)</label>
+                    <input type="number" id="duration" placeholder="e.g. 4" min="1" value="3" required>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-self: flex-end;">
+                    <button type="submit" class="btn-search">Search Now</button>
+                    <button type="button" id="clear-search" class="btn-login" style="border: 1px solid var(--border); height: 100%; display: none;" onclick="clearSearch()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Featured Destinations -->
+        <section id="destinations">
+            <h2 class="section-title">Popular Destinations</h2>
+            <p class="section-subtitle">Handpicked locations for your upcoming travel plans.</p>
+            <div id="dest-grid" class="dest-grid">
+                <!-- Destinations will be injected here -->
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile-section" class="hidden" style="background-color: var(--secondary);">
+            <div style="max-width: 800px; margin: 0 auto; background: var(--white); padding: 3rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                <h2 class="section-title" style="margin-bottom: 2rem; border-bottom: 2px solid var(--primary); padding-bottom: 1rem;">Your Travel Profile</h2>
+                <div id="profile-details" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <!-- Details will be injected by JS -->
+                </div>
+                <div id="live-location-card" style="margin-top: 3rem; padding: 2rem; background: #eef6ff; border-radius: var(--radius); border-left: 5px solid var(--primary);">
+                    <h3 style="margin-bottom: 1rem;"><i class="fa-solid fa-location-crosshairs"></i> Live Location Enabled</h3>
+                    <p id="current-coords">Fetching your coordinates...</p>
+                    <p id="nearest-info" style="font-weight: 600; color: var(--primary); margin-top: 0.5rem;"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews">
+            <h2 class="section-title">User Reviews</h2>
+            <p class="section-subtitle">What our travelers are saying about PlanMyYatra.</p>
+            
+            <div style="max-width: 800px; margin: 0 auto 4rem auto; background: var(--white); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border);">
+                <h3 style="margin-bottom: 1.5rem;">Leave a Review</h3>
+                <form onsubmit="handleReviewSubmit(event)">
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;">Rating</label>
+                        <select id="review-rating" required style="width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 4px;">
+                            <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+                            <option value="4">⭐⭐⭐⭐ (Great)</option>
+                            <option value="3">⭐⭐⭐ (Good)</option>
+                            <option value="2">⭐⭐ (Fair)</option>
+                            <option value="1">⭐ (Poor)</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;">Your Experience</label>
+                        <textarea id="review-text" required placeholder="Tell us what you think..." style="width: 100%; padding: 1rem; border: 1px solid var(--border); border-radius: 4px; height: 100px; font-family: inherit;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-search">Post Review</button>
+                </form>
+            </div>
+
+            <div id="reviews-container" class="dest-grid">
+                <!-- Reviews will be injected here -->
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" style="background-color: var(--secondary);">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Professional travel solutions tailored for you.</p>
+            <div class="dest-grid">
+                <div class="dest-card" style="padding: 2rem; text-align: center;">
+                    <i class="fa-solid fa-map-location-dot" style="font-size: 3rem; color: var(--primary); margin-bottom: 1.5rem;"></i>
+                    <h3>Trip Planning</h3>
+                    <p>Expertly curated itineraries based on your personal preferences and budget.</p>
+                </div>
+                <div class="dest-card" style="padding: 2rem; text-align: center;">
+                    <i class="fa-solid fa-hotel" style="font-size: 3rem; color: var(--primary); margin-bottom: 1.5rem;"></i>
+                    <h3>Accommodation</h3>
+                    <p>Verified hotel recommendations ranging from economy to premium stays.</p>
+                </div>
+                <div class="dest-card" style="padding: 2rem; text-align: center;">
+                    <i class="fa-solid fa-headset" style="font-size: 3rem; color: var(--primary); margin-bottom: 1.5rem;"></i>
+                    <h3>24/7 Support</h3>
+                    <p>Professional assistance throughout your journey to ensure a smooth experience.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" style="background-color: var(--white);">
+            <h2 class="section-title">About PlanMyYatra</h2>
+            <p class="section-subtitle">Discover our mission and why travelers choose us.</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem;">
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">Our Mission</h3>
+                    <p>At PlanMyYatra, we aim to simplify travel planning by providing handpicked recommendations that match your interests and budget. We believe everyone deserves a seamless travel experience.</p>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">Why Choose Us?</h3>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Personalized Itineraries</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Budget-Friendly Options</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> 24/7 Professional Support</li>
+                        <li style="margin-bottom: 0.5rem;"><i class="fa-solid fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Verified Local Insights</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">Our Reach</h3>
+                    <p>From the majestic Himalayas to the serene backwaters of Kerala, we cover over 200+ destinations across India, ensuring you find the perfect spot for your next journey.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="contact">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3 style="margin-bottom: 1.5rem;">PlanMyYatra</h3>
+                    <p>Your official partner for discovering and planning travels across the subcontinent.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#destinations">Destinations</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li>Email: support@planmyyatra.com</li>
+                        <li>Address: Visakhapatnam, Andhra Pradesh, India</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 PlanMyYatra. All rights reserved. Professional Travel Services.
+            </div>
+        </footer>
+    </div>
+
+
+    <!-- Modals -->
+    <div id="dest-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div id="modal-body">
+                <!-- Modal content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px; padding: 3rem;">
+            <button class="close-modal" onclick="closeLoginModal()">&times;</button>
+            <div style="text-align: center;">
+                <h2 style="margin-bottom: 1rem; color: var(--primary);">Sign In</h2>
+                <p style="color: var(--text-light); margin-bottom: 2rem;">Access your travel profile</p>
+                <form onsubmit="handleLogin(event)">
+                    <div style="margin-bottom: 1.5rem; text-align: left;">
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;">Email Address</label>
+                        <input type="email" required placeholder="name@example.com" style="width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 4px;">
+                    </div>
+                    <div style="margin-bottom: 2rem; text-align: left;">
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;">Password</label>
+                        <input type="password" required placeholder="••••••••" style="width: 100%; padding: 0.8rem; border: 1px solid var(--border); border-radius: 4px;">
+                    </div>
+                    <button type="submit" class="btn-search" style="width: 100%; padding: 1rem;">Sign In</button>
+                </form>
+                <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--text-light);">
+                    Don't have an account? <a href="#" style="color: var(--accent); font-weight: 600;">Sign Up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data/places.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

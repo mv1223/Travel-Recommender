@@ -1,0 +1,343 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #003580; /* Official Booking Blue */
+    --secondary: #f0f2f5;
+    --accent: #006ce4;
+    --text-dark: #1a1a1a;
+    --text-light: #4b4b4b;
+    --white: #ffffff;
+    --border: #dcdcdc;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--white);
+    color: var(--text-dark);
+    line-height: 1.6;
+    cursor: default !important; /* Resetting custom cursor */
+}
+
+/* Hide experimental cursor elements if they exist */
+#cursor, #cursor-follower { display: none !important; }
+
+/* Header & Navigation */
+header {
+    background-color: var(--primary);
+    padding: 1rem 10%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+.btn-login {
+    background-color: var(--white);
+    color: var(--primary);
+    padding: 0.5rem 1.2rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(rgba(0, 53, 128, 0.6), rgba(0, 53, 128, 0.6)), 
+                url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    padding: 6rem 10%;
+    text-align: center;
+    color: var(--white);
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 800;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+    opacity: 0.9;
+}
+
+/* Search Bar (Official Style) */
+.search-container {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    gap: 1rem;
+    max-width: 1000px;
+    margin: -3rem auto 0;
+    flex-wrap: wrap;
+}
+
+.search-item {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.search-item label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.search-item select, .search-item input {
+    padding: 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.btn-search {
+    background-color: var(--accent);
+    color: var(--white);
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: var(--radius);
+    font-weight: 700;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+/* Section Styling */
+section {
+    padding: 5rem 10%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.section-subtitle {
+    color: var(--text-light);
+    margin-bottom: 3rem;
+}
+
+/* Official Destination Cards */
+.dest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.dest-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.dest-card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-4px);
+}
+
+.dest-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.dest-content {
+    padding: 1.5rem;
+}
+
+.dest-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.dest-location {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dest-price {
+    margin-top: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+/* Official Footer */
+footer {
+    background-color: var(--secondary);
+    padding: 4rem 10%;
+    border-top: 1px solid var(--border);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+.footer-col h4 {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-col a {
+    text-decoration: none;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.footer-col a:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+/* Modal Styling */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--white);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    border-radius: var(--radius);
+    overflow-y: auto;
+    position: relative;
+    padding: 2rem;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Auth & Profile Sections */
+.section-container {
+    padding: 4rem 10%;
+    min-height: 80vh;
+}
+
+#auth-section {
+    background: linear-gradient(rgba(0, 53, 128, 0.05), rgba(0, 53, 128, 0.05));
+}
+
+#profile-section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+.search-item input, .search-item select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Review Cards */
+#reviews-container .dest-card {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Utilities */
+.hidden { display: none !important; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-container { flex-direction: column; margin-top: 2rem; }
+    .hero h1 { font-size: 2rem; }
+    section { padding: 3rem 5%; }
+}
