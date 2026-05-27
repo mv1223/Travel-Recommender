@@ -401,3 +401,71 @@ window.onclick = function(event) {
         closeLoginModal();
     }
 }
+
+// --- ANIMATION LOGIC ---
+
+function initScrollReveal() {
+    const reveals = document.querySelectorAll('.reveal-on-scroll');
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                // Optional: Stop observing once revealed to only animate once
+                // observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        root: null,
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    });
+
+    reveals.forEach(reveal => {
+        revealObserver.observe(reveal);
+    });
+}
+
+// Ensure initScrollReveal is called on load
+document.addEventListener("DOMContentLoaded", () => {
+    initScrollReveal();
+});
+
+// --- 3D TILT EFFECT LOGIC ---
+function initTiltEffect() {
+    const cards = document.querySelectorAll('.dest-card');
+
+    cards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const deltaX = (x - centerX) / centerX;
+            const deltaY = (y - centerY) / centerY;
+
+            // Apply subtle rotation based on mouse position
+            card.style.transform = `perspective(1000px) rotateX(${deltaY * -5}deg) rotateY(${deltaX * 5}deg) translateY(-5px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+        });
+    });
+}
+
+// Re-init tilt effect after grid render
+const originalRenderGrid = renderGrid;
+renderGrid = function(data, duration) {
+    originalRenderGrid(data, duration);
+    // Use a slight timeout to ensure DOM is updated
+    setTimeout(initTiltEffect, 50);
+};
+
+// Also init on first load if any static cards exist
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(initTiltEffect, 500); // Allow initial render to complete
+});
