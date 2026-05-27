@@ -25,8 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // --- AUTH LOGIC ---
 
 function toggleAuthForms() {
-    document.getElementById('login-form-container').classList.toggle('hidden');
-    document.getElementById('signup-form-container').classList.toggle('hidden');
+    document.getElementById('auth-flip-inner').classList.toggle('do-flip');
 }
 
 function calculateAge() {

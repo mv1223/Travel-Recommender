@@ -401,3 +401,45 @@ footer {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* 3D Flip Card for Auth Forms */
+.flip-card {
+    background-color: transparent;
+    perspective: 1000px;
+    height: 680px; /* Adjusted base height to fit the full signup form */
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flip-card-inner.do-flip {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+    top: 0;
+    left: 0;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+/* Neat Input Fields Focus States */
+.search-item input:focus,
+.search-item select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 108, 228, 0.2);
+    transition: all 0.3s ease;
+}

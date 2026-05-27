@@ -27,70 +27,74 @@
 
     <!-- 1. AUTH SECTION -->
     <main id="auth-section" class="section-container">
-        <div style="max-width: 500px; margin: 4rem auto; padding: 2rem; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);">
-            <div id="login-form-container">
-                <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">Welcome to PlanMyYatra</h2>
-                <form onsubmit="handleLogin(event)">
-                    <div class="search-item" style="margin-bottom: 1.5rem;">
-                        <label>Email Address</label>
-                        <input type="email" id="login-email" required placeholder="name@example.com" style="width: 100%;">
-                    </div>
-                    <div class="search-item" style="margin-bottom: 1.5rem;">
-                        <label>Password</label>
-                        <input type="password" id="login-password" required placeholder="••••••••" style="width: 100%;">
-                    </div>
-                    <button type="submit" class="btn-search" style="width: 100%; padding: 1rem;">Sign In</button>
-                    <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
-                        New explorer? <a href="#" onclick="toggleAuthForms()" style="color: var(--accent); font-weight: 600;">Create an account</a>
-                    </p>
-                </form>
-            </div>
+        <div class="flip-card" style="max-width: 500px; margin: 4rem auto;">
+            <div class="flip-card-inner" id="auth-flip-inner">
+                <!-- FRONT: Login -->
+                <div id="login-form-container" class="flip-card-front" style="padding: 2rem; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);">
+                    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">Welcome to PlanMyYatra</h2>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="search-item" style="margin-bottom: 1.5rem;">
+                            <label>Email Address</label>
+                            <input type="email" id="login-email" required placeholder="name@example.com" style="width: 100%;">
+                        </div>
+                        <div class="search-item" style="margin-bottom: 1.5rem;">
+                            <label>Password</label>
+                            <input type="password" id="login-password" required placeholder="••••••••" style="width: 100%;">
+                        </div>
+                        <button type="submit" class="btn-search" style="width: 100%; padding: 1rem;">Sign In</button>
+                        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                            New explorer? <a href="#" onclick="toggleAuthForms()" style="color: var(--accent); font-weight: 600;">Create an account</a>
+                        </p>
+                    </form>
+                </div>
 
-            <div id="signup-form-container" class="hidden">
-                <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">Start Your Journey</h2>
-                <form onsubmit="handleSignup(event)">
-                    <div class="search-item" style="margin-bottom: 1rem;">
-                        <label>Full Name</label>
-                        <input type="text" id="signup-name" required placeholder="John Doe" style="width: 100%;">
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                        <div class="search-item">
-                            <label>Date of Birth</label>
-                            <input type="date" id="signup-dob" required oninput="calculateAge()" onchange="calculateAge()" style="width: 100%;">
+                <!-- BACK: Signup -->
+                <div id="signup-form-container" class="flip-card-back" style="padding: 2rem; background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow);">
+                    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">Start Your Journey</h2>
+                    <form onsubmit="handleSignup(event)">
+                        <div class="search-item" style="margin-bottom: 1rem;">
+                            <label>Full Name</label>
+                            <input type="text" id="signup-name" required placeholder="John Doe" style="width: 100%;">
                         </div>
-                        <div class="search-item">
-                            <label>Calculated Age</label>
-                            <input type="text" id="signup-age" readonly placeholder="Age" style="width: 100%; background: #f9f9f9;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div class="search-item">
+                                <label>Date of Birth</label>
+                                <input type="date" id="signup-dob" required oninput="calculateAge()" onchange="calculateAge()" style="width: 100%;">
+                            </div>
+                            <div class="search-item">
+                                <label>Calculated Age</label>
+                                <input type="text" id="signup-age" readonly placeholder="Age" style="width: 100%; background: #f9f9f9;">
+                            </div>
                         </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                        <div class="search-item">
-                            <label>Gender</label>
-                            <select id="signup-gender" required style="width: 100%;">
-                                <option value="" disabled selected>Select</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div class="search-item">
+                                <label>Gender</label>
+                                <select id="signup-gender" required style="width: 100%;">
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="search-item">
+                                <label>Phone Number</label>
+                                <input type="tel" id="signup-phone" required placeholder="+91 ..." style="width: 100%;">
+                            </div>
                         </div>
-                        <div class="search-item">
-                            <label>Phone Number</label>
-                            <input type="tel" id="signup-phone" required placeholder="+91 ..." style="width: 100%;">
+                        <div class="search-item" style="margin-bottom: 1rem;">
+                            <label>Email Address</label>
+                            <input type="email" id="signup-email" required placeholder="name@example.com" style="width: 100%;">
                         </div>
-                    </div>
-                    <div class="search-item" style="margin-bottom: 1rem;">
-                        <label>Email Address</label>
-                        <input type="email" id="signup-email" required placeholder="name@example.com" style="width: 100%;">
-                    </div>
-                    <div class="search-item" style="margin-bottom: 1.5rem;">
-                        <label>Password</label>
-                        <input type="password" id="signup-password" required placeholder="••••••••" style="width: 100%;">
-                    </div>
-                    <button type="submit" class="btn-search" style="width: 100%; padding: 1rem;">Create Profile</button>
-                    <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
-                        Already have an account? <a href="#" onclick="toggleAuthForms()" style="color: var(--accent); font-weight: 600;">Sign In</a>
-                    </p>
-                </form>
+                        <div class="search-item" style="margin-bottom: 1.5rem;">
+                            <label>Password</label>
+                            <input type="password" id="signup-password" required placeholder="••••••••" style="width: 100%;">
+                        </div>
+                        <button type="submit" class="btn-search" style="width: 100%; padding: 1rem;">Create Profile</button>
+                        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                            Already have an account? <a href="#" onclick="toggleAuthForms()" style="color: var(--accent); font-weight: 600;">Sign In</a>
+                        </p>
+                    </form>
+                </div>
             </div>
         </div>
     </main>
