@@ -61,3 +61,15 @@ export const mockTestimonials = [
     text: "The budget planner helped me stay on track while visiting Europe.",
   },
 ];
+
+export const mockBudget = {
+  total: 3000,
+  categories: [
+    { name: "Hotels", amount: 1200, color: "#3B82F6" },
+    { name: "Food", amount: 600, color: "#EC4899" },
+    { name: "Transport", amount: 400, color: "#10B981" },
+    { name: "Activities", amount: 500, color: "#F59E0B" },
+    { name: "Shopping", amount: 200, color: "#8B5CF6" },
+    { name: "Emergency", amount: 100, color: "#EF4444" },
+  ],
+};
