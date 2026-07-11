@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Destinations | TravelAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#0066FF', accent: '#FF385C', dark: '#1D1D1F' },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#F5F5F7] dark:bg-dark text-dark dark:text-white font-sans page-fade-in">
+
+    <!-- Modular Nav -->
+    <nav id="navbar" class="sticky top-0 z-50 py-4 px-6"></nav>
+
+    <main class="container mx-auto px-6 py-12">
+        <header class="mb-12">
+            <h1 class="text-5xl font-black mb-6 tracking-tight">Explore the <span class="text-primary">World</span></h1>
+            <div class="flex flex-col lg:flex-row gap-4">
+                <div class="flex-1 relative">
+                    <i data-lucide="search" class="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6"></i>
+                    <input type="text" id="search-input" placeholder="Search destinations, countries, or activities..." 
+                           class="w-full pl-16 pr-6 py-5 rounded-[24px] bg-white dark:bg-white/5 border-none focus:ring-2 focus:ring-primary shadow-sm font-bold text-lg">
+                </div>
+                <div class="flex gap-2">
+                    <select id="category-filter" class="px-8 py-5 rounded-[24px] bg-white dark:bg-white/5 border-none shadow-sm font-bold focus:ring-2 focus:ring-primary appearance-none pr-12">
+                        <option value="All">All Categories</option>
+                        <option value="Beach">Beach</option>
+                        <option value="Mountain">Mountain</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Luxury">Luxury</option>
+                        <option value="Historical">Historical</option>
+                        <option value="Spiritual">Spiritual</option>
+                    </select>
+                    <select id="budget-filter" class="px-8 py-5 rounded-[24px] bg-white dark:bg-white/5 border-none shadow-sm font-bold focus:ring-2 focus:ring-primary appearance-none pr-12">
+                        <option value="All">Any Budget</option>
+                        <option value="Budget">Budget</option>
+                        <option value="Mid-range">Mid-range</option>
+                        <option value="Luxury">Luxury</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <div id="results-count" class="mb-12 text-gray-400 font-bold uppercase tracking-widest text-xs">Scanning platform data...</div>
+        
+        <div id="destinations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Dynamic Content -->
+        </div>
+
+        <div id="no-results" class="hidden text-center py-32 space-y-6">
+            <div class="w-20 h-20 bg-gray-100 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto text-gray-400">
+                <i data-lucide="map" class="w-10 h-10"></i>
+            </div>
+            <h3 class="text-2xl font-black">No destinations found.</h3>
+            <p class="text-gray-400 font-bold">Try adjusting your filters or searching for something else.</p>
+            <button onclick="resetFilters()" class="text-primary font-black">Reset all filters</button>
+        </div>
+
+        <div class="mt-20 flex justify-center">
+            <button id="load-more" class="px-12 py-5 bg-dark dark:bg-white text-white dark:text-dark rounded-full font-black hover:bg-primary hover:text-white transition-all shadow-xl active:scale-95">
+                Load More Experiences
+            </button>
+        </div>
+    </main>
+
+    <script src="../data/app_state.js"></script>
+    <script src="../data/destinations.js"></script>
+    <script src="../components/navbar.js"></script>
+    <script src="../components/cards.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        const grid = document.getElementById('destinations-grid');
+        const searchInput = document.getElementById('search-input');
+        const categoryFilter = document.getElementById('category-filter');
+        const budgetFilter = document.getElementById('budget-filter');
+        const resultsCount = document.getElementById('results-count');
+        const noResults = document.getElementById('no-results');
+
+        let currentPage = 1;
+        const itemsPerPage = 12;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            Navbar.render('destinations');
+            
+            // Initial check for URL params
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('search')) {
+                searchInput.value = urlParams.get('search');
+            }
+            
+            renderDestinations();
+        });
+
+        function renderDestinations() {
+            const query = searchInput.value.toLowerCase();
+            const category = categoryFilter.value;
+            const budget = budgetFilter.value;
+
+            let filtered = DESTINATIONS.filter(d => {
+                const matchesSearch = d.name.toLowerCase().includes(query) || 
+                                    d.city.toLowerCase().includes(query) || 
+                                    d.country.toLowerCase().includes(query) ||
+                                    d.tags.some(t => t.toLowerCase().includes(query));
+                const matchesCategory = category === 'All' || d.category === category;
+                const matchesBudget = budget === 'All' || d.budget === budget;
+                return matchesSearch && matchesCategory && matchesBudget;
+            });
+
+            const total = filtered.length;
+            resultsCount.textContent = `Found ${total} destinations matching your search`;
+
+            if (total === 0) {
+                grid.classList.add('hidden');
+                noResults.classList.remove('hidden');
+            } else {
+                grid.classList.remove('hidden');
+                noResults.classList.add('hidden');
+                const toShow = filtered.slice(0, currentPage * itemsPerPage);
+                grid.innerHTML = toShow.map(d => Cards.createDestinationCard(d)).join('');
+                
+                // Update favorite icons
+                const favs = AppState.getFavorites();
+                document.querySelectorAll('[data-lucide="heart"]').forEach(icon => {
+                    const card = icon.closest('.group');
+                    const idAttr = card.querySelector('button')?.getAttribute('onclick');
+                    if (idAttr) {
+                        const id = parseInt(idAttr.match(/\d+/)[0]);
+                        if (favs.includes(id)) {
+                            icon.classList.add('fill-accent', 'text-accent');
+                        }
+                    }
+                });
+            }
+            
+            lucide.createIcons();
+        }
+
+        function resetFilters() {
+            searchInput.value = '';
+            categoryFilter.value = 'All';
+            budgetFilter.value = 'All';
+            renderDestinations();
+        }
+
+        searchInput.addEventListener('input', () => { currentPage = 1; renderDestinations(); });
+        categoryFilter.addEventListener('change', () => { currentPage = 1; renderDestinations(); });
+        budgetFilter.addEventListener('change', () => { currentPage = 1; renderDestinations(); });
+        document.getElementById('load-more').addEventListener('click', () => {
+            currentPage++;
+            renderDestinations();
+        });
+    </script>
+</body>
+</html>

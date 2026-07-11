@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | TravelAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#0066FF', accent: '#FF385C', dark: '#1D1D1F' },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#F5F5F7] dark:bg-dark text-dark dark:text-white font-sans min-h-screen page-fade-in">
+
+    <div class="flex flex-col lg:flex-row min-h-screen">
+        
+        <!-- Sidebar -->
+        <aside class="w-full lg:w-80 bg-white dark:bg-white/5 border-r border-gray-100 dark:border-white/10 p-8 flex flex-col">
+            <a href="../index.html" class="text-2xl font-black tracking-tighter mb-12 block">
+                <span class="text-primary">TRAVEL</span><span class="text-accent">AI</span>
+            </a>
+
+            <nav class="space-y-4 flex-1">
+                <a href="#" class="flex items-center gap-4 px-6 py-4 rounded-2xl bg-primary text-white font-black shadow-lg shadow-primary/20">
+                    <i data-lucide="layout-dashboard"></i> Overview
+                </a>
+                <a href="planner.html" class="flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-gray-500 hover:text-dark dark:hover:text-white transition-all">
+                    <i data-lucide="map"></i> My Trips
+                </a>
+                <a href="favorites.html" class="flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-gray-500 hover:text-dark dark:hover:text-white transition-all">
+                    <i data-lucide="heart"></i> Favorites
+                </a>
+                <a href="profile.html" class="flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-gray-500 hover:text-dark dark:hover:text-white transition-all">
+                    <i data-lucide="settings"></i> Settings
+                </a>
+            </nav>
+
+            <div class="mt-auto pt-8">
+                <div class="bg-gray-50 dark:bg-white/5 p-6 rounded-[32px] relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
+                    <h4 class="font-black text-sm mb-2 relative z-10">Elite Membership</h4>
+                    <p class="text-xs text-gray-400 font-bold mb-4 relative z-10">Unlock 15% discount on all luxury stays.</p>
+                    <button class="w-full py-3 bg-dark dark:bg-white text-white dark:text-dark rounded-xl text-xs font-black relative z-10">Upgrade Now</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 lg:p-16 overflow-y-auto">
+            <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
+                <div>
+                    <h1 class="text-4xl font-black mb-2 tracking-tight">Welcome back, <span id="dash-user-name" class="text-primary">Traveler</span></h1>
+                    <p class="text-gray-400 font-bold">Your AI Architect has new suggestions for you.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="AppState.toggleTheme()" class="w-14 h-14 bg-white dark:bg-white/5 rounded-2xl shadow-sm flex items-center justify-center">
+                        <i data-lucide="moon" class="text-gray-400 dark:hidden"></i>
+                        <i data-lucide="sun" class="text-gray-400 hidden dark:block"></i>
+                    </button>
+                    <div class="flex items-center gap-4 bg-white dark:bg-white/5 p-2 pr-6 rounded-2xl shadow-sm border border-gray-50 dark:border-white/10">
+                        <div id="user-initial" class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white font-black">T</div>
+                        <div>
+                            <p id="user-fullname" class="font-black text-sm">Guest User</p>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Global Explorer</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white dark:bg-white/5 p-8 rounded-[40px] shadow-sm border border-gray-50 dark:border-white/10 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 font-bold text-xs uppercase tracking-widest mb-2">Saved Trips</p>
+                        <h3 class="text-4xl font-black" id="stat-trips">0</h3>
+                    </div>
+                    <div class="w-16 h-16 bg-blue-50 dark:bg-primary/10 text-primary rounded-3xl flex items-center justify-center">
+                        <i data-lucide="map" class="w-8 h-8"></i>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-white/5 p-8 rounded-[40px] shadow-sm border border-gray-50 dark:border-white/10 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 font-bold text-xs uppercase tracking-widest mb-2">Favorites</p>
+                        <h3 class="text-4xl font-black" id="stat-favs">0</h3>
+                    </div>
+                    <div class="w-16 h-16 bg-red-50 dark:bg-accent/10 text-accent rounded-3xl flex items-center justify-center">
+                        <i data-lucide="heart" class="w-8 h-8"></i>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-white/5 p-8 rounded-[40px] shadow-sm border border-gray-50 dark:border-white/10 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 font-bold text-xs uppercase tracking-widest mb-2">Bookings</p>
+                        <h3 class="text-4xl font-black" id="stat-bookings">0</h3>
+                    </div>
+                    <div class="w-16 h-16 bg-green-50 dark:bg-green-500/10 text-green-500 rounded-3xl flex items-center justify-center">
+                        <i data-lucide="check-circle" class="w-8 h-8"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Left: Recent Activity & Charts -->
+                <div class="lg:col-span-2 space-y-12">
+                    <div class="bg-white dark:bg-white/5 p-10 rounded-[40px] shadow-sm border border-gray-100 dark:border-white/10">
+                        <h3 class="text-2xl font-black mb-8">Travel <span class="text-primary">Analytics</span></h3>
+                        <canvas id="travelChart" height="200"></canvas>
+                    </div>
+
+                    <div class="space-y-8">
+                        <h3 class="text-2xl font-black">Recent <span class="text-primary">Activity</span></h3>
+                        <div id="activity-list" class="space-y-4">
+                            <!-- Dynamic Activity -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Weather & Quick Planner -->
+                <div class="space-y-12">
+                    <div class="bg-dark text-white p-10 rounded-[40px] shadow-2xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl"></div>
+                        <div class="flex justify-between items-start mb-8 relative z-10">
+                            <div>
+                                <h4 class="text-gray-400 font-bold text-xs uppercase tracking-widest mb-1">Current Focus</h4>
+                                <h3 class="text-2xl font-black">Paris, France</h3>
+                            </div>
+                            <i data-lucide="cloud-sun" class="text-primary w-10 h-10"></i>
+                        </div>
+                        <div class="flex items-end justify-between relative z-10">
+                            <h2 class="text-6xl font-black">22°</h2>
+                            <p class="text-xs font-bold text-gray-400">Perfect for exploration</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-white/5 p-10 rounded-[40px] shadow-sm border border-gray-100 dark:border-white/10">
+                        <h3 class="text-xl font-black mb-6">AI Match</h3>
+                        <div id="dash-rec" class="space-y-6">
+                            <!-- Dynamic Rec -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../data/app_state.js"></script>
+    <script src="../data/destinations.js"></script>
+    <script src="../data/hotels.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = AppState.getUser();
+            if (!user) {
+                // If no user, show guest or redirect
+                document.getElementById('dash-user-name').innerText = "Guest";
+            } else {
+                document.getElementById('dash-user-name').innerText = user.name;
+                document.getElementById('user-fullname').innerText = user.name;
+                document.getElementById('user-initial').innerText = user.name.charAt(0).toUpperCase();
+            }
+
+            renderDashboard();
+            initDashboardChart();
+            lucide.createIcons();
+        });
+
+        function renderDashboard() {
+            const stats = AppState.getAnalytics();
+            document.getElementById('stat-trips').innerText = stats.totalTrips;
+            document.getElementById('stat-favs').innerText = stats.totalFavs;
+            document.getElementById('stat-bookings').innerText = stats.totalBookings;
+
+            const activityList = document.getElementById('activity-list');
+            if (stats.recentActivity.length === 0) {
+                activityList.innerHTML = '<p class="text-gray-400 font-bold text-sm text-center py-10">No recent activity found.</p>';
+            } else {
+                activityList.innerHTML = stats.recentActivity.map(act => `
+                    <div class="bg-white dark:bg-white/5 p-6 rounded-[32px] border border-gray-50 dark:border-white/10 flex items-center justify-between group hover:shadow-md transition-all">
+                        <div class="flex items-center gap-6">
+                            <div class="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center">
+                                <i data-lucide="${act.hotelName ? 'check-circle' : 'map'}"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-dark dark:text-white">${act.hotelName || act.title}</h4>
+                                <p class="text-gray-400 text-xs font-bold">${act.hotelName ? 'Booking Confirmed' : 'Trip Planned'} on ${act.date}</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="text-gray-300"></i>
+                    </div>
+                `).join('');
+            }
+
+            // AI Match Preview
+            const recContainer = document.getElementById('dash-rec');
+            const randomDest = DESTINATIONS[Math.floor(Math.random() * DESTINATIONS.length)];
+            recContainer.innerHTML = `
+                <div class="group cursor-pointer">
+                    <div class="relative rounded-2xl overflow-hidden mb-4">
+                        <img src="${randomDest.image}" class="w-full h-40 object-cover group-hover:scale-110 transition-transform">
+                        <div class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full">98% MATCH</div>
+                    </div>
+                    <h4 class="font-black text-dark dark:text-white group-hover:text-primary transition-colors">${randomDest.name}</h4>
+                    <p class="text-gray-400 text-xs font-bold">Recommended for your ${randomDest.category.toLowerCase()} interest.</p>
+                </div>
+            `;
+            
+            lucide.createIcons();
+        }
+
+        function initDashboardChart() {
+            const ctx = document.getElementById('travelChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Trips Planned',
+                        data: [2, 5, 3, 8, 4, 6],
+                        backgroundColor: '#0066FF',
+                        borderRadius: 12,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
