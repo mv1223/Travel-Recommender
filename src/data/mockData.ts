@@ -2,6 +2,7 @@ export const mockDestinations = [
   {
     id: 1,
     name: "Bali, Indonesia",
+    city: "Denpasar",
     image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&auto=format&fit=crop",
     rating: 4.9,
     price: 1200,
@@ -12,6 +13,7 @@ export const mockDestinations = [
   {
     id: 2,
     name: "Swiss Alps",
+    city: "Zermatt",
     image: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=800&auto=format&fit=crop",
     rating: 4.8,
     price: 2500,
@@ -22,6 +24,7 @@ export const mockDestinations = [
   {
     id: 3,
     name: "Santorini, Greece",
+    city: "Thira",
     image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&auto=format&fit=crop",
     rating: 5.0,
     price: 1800,
@@ -32,6 +35,7 @@ export const mockDestinations = [
   {
     id: 4,
     name: "Kyoto, Japan",
+    city: "Kyoto",
     image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&auto=format&fit=crop",
     rating: 4.7,
     price: 1500,
