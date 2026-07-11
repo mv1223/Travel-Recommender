@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
   Search, MapPin, Calendar, Users, Star, Heart, ArrowRight,
-  Sparkles, TrendingUp, ShieldCheck, Globe, Camera, Coffee, 
-  Mountain, Beach, Umbrella, Compass, Wallet, Plane
+  Sparkles, TrendingUp, ShieldCheck, Camera, Coffee, 
+  Mountain, Waves, Compass, Wallet, Plane
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -30,7 +30,7 @@ export default function Home() {
   const floatingIcons = [
     { icon: Plane, delay: 0, size: 24, color: 'text-primary' },
     { icon: Mountain, delay: 0.3, size: 20, color: 'text-accent' },
-    { icon: Beach, delay: 0.6, size: 22, color: 'text-primary' },
+    { icon: Waves, delay: 0.6, size: 22, color: 'text-primary' },
     { icon: Camera, delay: 0.9, size: 18, color: 'text-accent' },
     { icon: Coffee, delay: 1.2, size: 20, color: 'text-primary' },
   ];
